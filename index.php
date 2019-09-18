@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once ('include/mysql_connect_inc.php');
+?>
 <!DOCTYPE html>
 <!-- ======================================================================================
 ! PROJECT NAME: Login Page (Front End / Back End task 1)
@@ -51,7 +55,41 @@
     <meta name="format-detection" content="telephone=no" />
   </head>
   <body>
-    <div class="container" id="form-holder">
+    <?php
+      if (isset($_SESSION['u_username'])) {
+          echo '<div class="container" id="form-holder">
+      <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h3>Login Successful</h3>
+              <form
+                class="biodata-form"
+                action="include/unset.php"
+                method="post"
+                enctype="application/x-www-form-urlencoded"
+                autocomplete="off"
+                accept-charset="utf-8"
+              >
+              <div class="col-lg-12 ">
+                  <div class="form-group">
+                    <input
+                      type="submit"
+                      name="submit"
+                      value="Log Out"
+                      class="btn btn-block btn-success"
+                    />
+                  </div>
+                </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>';
+      }
+      else {
+            echo '<div class="container" id="form-holder">
       <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
           <div class="panel panel-default">
@@ -62,20 +100,33 @@
             <div class="panel-body">
               <form
                 class="biodata-form"
-                action="index.html"
+                action="include/login_inc.php"
                 method="post"
                 enctype="application/x-www-form-urlencoded"
                 autocomplete="off"
-                target="_self"
                 accept-charset="utf-8"
               >
                 <div class="col-lg-12">
-                  <div class="form-group">
-                    <label class="">User Name</label>
-                    <div class="input-group">
-                      <input
+                  <div class="form-group">';
+                  if (isset($_GET['login'])) {
+                      switch ($_GET['login']) {
+                       case 'empty':
+                         echo "<p style='color: red'>Please fill the fields correctly.</p>";
+                         break;
+                       case 'notexist':
+                         echo "<p style='color: red'>Username or Password is invalid.</p>";
+                         break;
+                       default:
+                         echo "";
+                         break;
+                     }
+                    }
+
+                   echo '<label class="">User Name</label>
+                    <div class="input-group">  
+                     <input
                         type="text"
-                        name=""
+                        name="username"
                         inputmode="text"
                         value=""
                         class="form-control"
@@ -95,7 +146,7 @@
                     <div class="input-group">
                       <input
                         type="password"
-                        name=""
+                        name="password"
                         inputmode="text"
                         value=""
                         class="form-control"
@@ -113,7 +164,7 @@
                   <div class="form-group">
                     <input
                       type="submit"
-                      name=""
+                      name="submit"
                       value="Log In"
                       class="btn btn-block btn-success"
                     />
@@ -124,6 +175,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>';
+      }
+     ?>
   </body>
 </html>
