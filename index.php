@@ -87,11 +87,26 @@ require_once ('include/mysql_connect_inc.php');
 
         <?php
          if (isset($_SESSION['u_username'])) {
-          echo '<!-- Log In Form Below -->
+                    echo '<div class="container-profile row">
+              <div class="container-profile-child">
+                <h1 class="header-profile">P<u>rofile</u></h1>
+                <label for="label-btn-profile"></label>
+                <div class="profile-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                <h2>LOGIN SUCCESSFULL!!!</h2>
+                <form method="post" action="include/unset.php">
+                <input type="submit" name="submit" value="Log Out" class="login-btn" />
+                </form>
+                 
+              </div>
+            </div>';
+          }
+        else {
+            echo '<!-- Log In Form Below -->
         <div class="container-login row" id="container_login_id">
-          <form action="" method="post" class="container-form-login">
+          <form action="include/login_inc.php" method="post" class="container-form-login">
             <h1 class="header-sign-in">Si<u>gn I</u>n</h1>';
-            
               if (isset($_GET['login'])) {
                 switch ($_GET['login']) {
                  case 'empty':
@@ -108,7 +123,7 @@ require_once ('include/mysql_connect_inc.php');
             echo '<label for="label-username-login"></label>
             <input
               type="text"
-              name=""
+              name="username"
               id="label-username-login"
               placeholder="Enter Username"
               required
@@ -116,66 +131,78 @@ require_once ('include/mysql_connect_inc.php');
             <label for="label-password-login"></label>
             <input
               type="password"
-              name=""
+              name="password"
               id="label-password-login"
               placeholder="Enter Password"
               required
             />
-            <input
-              type="checkbox"
-              class="chk"
-              name=""
-              id="label-forgot-password-login"
-            />
-            <label for="label-forgot-password-login">Forgot Password...</label>
             <label for="label-btn-login"></label>
-            <input type="submit" value="Login" class="login-btn" />
+            <input name="submit" type="submit" value="Login" class="login-btn"/>
             <label for="label-login-to-sign-up">Don’t Have an account?</label>
             <a href="#" onclick="show_sign_up()" id="label-login-to-sign-up"
               >Sign Up now</a
             >
           </form>
-        </div>'; }
-
-        else {
-          echo '<div class="container-profile row">
-              <div class="container-profile-child">
-                <h1 class="header-profile">P<u>rofile</u></h1>
-                <label for="label-btn-profile"></label>
-                <div class="profile-icon">
-                  <i class="fas fa-user"></i>
-                </div>
-                <h2>LOGIN SUCCESSFULL!!!</h2>
-              </div>
-            </div>';
+        </div>'; 
         }
         ?>
 
         <!-- Sign Up Form Below -->
 
         <div class="container-sign-up row" id="container_sign_up_id">
-          <form action="" method="post" class="container-form-sign-up">
+          <form action="include/reg_inc.php" method="post" class="container-form-sign-up">
             <h1 class="header-sign-up">Si<u>gn U</u>p</h1>
-            <label for="label-full-name-sign-up"></label>
+            <?php
+            if (isset($_GET['registration'])) {
+                switch ($_GET['registration']) {
+                 case 'empty':
+                   echo "<p style='color: red'>Please fill the fields correctly.</p>";
+                   break;
+                 case 'usernametaken':
+                   echo "<p style='color: red'>Username has been Taken.</p>";
+                   break;
+                 case 'emailregistered':
+                    echo "<p style='color: red'>Email has been Taken.</p>";
+                   break;
+                 case 'succesful':
+                   echo "<p style='color: green'>registration successful, proceed to log in.</p>";
+                   break;
+                 case 'passwordnomatch':
+                  echo "<p style='color: red'>Try again, your passwords don't match</p>";
+                 default:
+                   echo "";
+                   break;
+               }
+              }
+              ?>
+            <label for="label-first-name-sign-up"></label>
             <input
               type="text"
-              name=""
-              id="label-full-name-sign-up"
-              placeholder="Enter Full Name"
+              name="firstname"
+              id="label-first-name-sign-up"
+              placeholder="Enter First Name"
+              required
+            />
+            <label for="label-last-name-name-sign-up"></label>
+            <input
+              type="text"
+              name="lastname"
+              id="label-last-name-sign-up"
+              placeholder="Enter Last Name"
               required
             />
             <label for="label-username-sign-up"></label>
             <input
               type="text"
-              name=""
+              name="username"
               id="label-username-sign-up"
               placeholder="Enter Username"
               required
             />
             <label for="label-email-sign-up"></label>
             <input
-              type="text"
-              name=""
+              type="email"
+              name="email"
               id="label-email-sign-up"
               placeholder="Enter Email"
               required
@@ -183,7 +210,7 @@ require_once ('include/mysql_connect_inc.php');
             <label for="label-password-sign-up"></label>
             <input
               type="password"
-              name=""
+              name="pwd"
               id="label-password-sign-up"
               placeholder="Enter Password"
               required
@@ -191,29 +218,16 @@ require_once ('include/mysql_connect_inc.php');
             <label for="label-confirm-password-sign-up"></label>
             <input
               type="password"
-              name=""
+              name="conpwd"
               id="label-confirm-password-sign-up"
               placeholder="Confirm Password"
               required
             />
-            <input
-              type="checkbox"
-              class="chk"
-              name=""
-              id="label-agree-terms-login"
-            />
-            <label for="label-agree-terms-login"
-              >I agree to the
-              <a href="#" target="_blank" rel="noopener noreferrer"
-                >Terms Of User</a
-              ></label
-            >
             <label for="label-btn-sign-up"></label>
-            <input type="submit" value="Sign Up" class="login-btn" />
+            <input name = "register" type="submit" value="Sign Up" class="login-btn" />
             <label for="label-link-to-sign-in">Already Have an account?</label>
             <a href="#" onclick="show_log_in()" id="label-link-to-sign-in"
-              >Log In now</a
-            >
+              >Log In now</a>
           </form>
         </div>
       </div>
@@ -222,5 +236,12 @@ require_once ('include/mysql_connect_inc.php');
     <footer></footer>
     <!-- Javascript Link -->
     <script src="js/main.js"></script>
+    <?php
+      if (isset($_GET['registration'])) {
+        echo '<script>show_sign_up();</script>';
+      }
+    ?>
   </body>
 </html>
+
+

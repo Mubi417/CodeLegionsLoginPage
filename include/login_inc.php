@@ -5,7 +5,7 @@ if (isset($_POST['submit'])){
 	include'mysql_connect_inc.php';
 
 	$username = strtolower(mysqli_real_escape_string($dbc, $_POST['username']));
-	$password = strtolower(mysqli_real_escape_string($dbc, $_POST['password']));
+	$password = mysqli_real_escape_string($dbc, $_POST['password']);
 
 	if (empty($username) || empty($password)){
 		header("Location: ../index.php?login=empty");
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])){
 				else {
 					$_SESSION['u_username'] = $row['username'];
 					$_SESSION['u_email'] = $row['email'];
-					echo isset($_SESSION['u_username']);
+					//echo isset($_SESSION['u_username']);
 					header("Location: ../index.php?login=successful");
 				}
 			}
@@ -37,5 +37,7 @@ if (isset($_POST['submit'])){
 	}
 
 }
-
+else {
+	echo "Something went wrong";
+}
 ?>
